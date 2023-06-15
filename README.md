@@ -2,7 +2,7 @@
 
 ## Introduction
 Its a simple example app to demonstrate:
-- Spring Rest Repository
+- Spring Data with Rest Repository
 - Code Generattion using **OpenApi3** Spec 
 
 ## Prerequisites
