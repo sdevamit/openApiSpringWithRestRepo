@@ -1,0 +1,262 @@
+openapi: "3.0.3"
+info:
+  title: Test Apis
+  version: "1.0"
+servers:
+  - url: http://localhost/app
+paths:
+  /department/{id}:
+    delete:
+      operationId: deleteDepartmentById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        default:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/Error"
+        "200":
+          description: OK
+    get:
+      operationId: getDepartmentById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        default:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/Error"
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/Department"
+  /department:
+    post:
+      operationId: addDepartment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Department"
+      responses:
+        "201":
+          description: OK
+        default:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/Error"
+    get:
+      operationId: getAllDepartment
+      responses:
+        default:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/Error"
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Department"
+  /employee/{id}:
+    delete:
+      operationId: deleteEmployeeById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        default:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/Error"
+        "200":
+          description: OK
+    get:
+      operationId: getEmployeeById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        default:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/Error"
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/Employee"
+  /employee:
+    post:
+      operationId: addEmployee
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Employee"
+      responses:
+        "201":
+          description: OK
+        default:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/Error"
+    get:
+      operationId: getAllEmployee
+      responses:
+        default:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/Error"
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Employee"
+components:
+  schemas:
+    Department:
+      type: object
+      x-class-extra-annotation: |-
+        @javax.persistence.Entity
+      properties:
+        id:
+          type: integer
+          format: int32
+          x-field-extra-annotation: |-
+            @javax.persistence.Id
+            @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
+        name:
+          type: string
+
+    Employee:
+      type: object
+      x-class-extra-annotation: |-
+        @javax.persistence.Entity
+      required:
+        - "deptId"
+        - "firstName"
+        - "lastName"
+      properties:
+        id:
+          type: integer
+          format: int32
+          example: 10
+          x-field-extra-annotation: |-
+            @javax.persistence.Id
+            @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
+        deptId:
+          type: integer
+          format: int32
+          example: 198772
+        username:
+          type: string
+          example: theUser
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: James
+        email:
+          type: string
+          example: john@email.com
+        password:
+          type: string
+          example: "12345"
+        phone:
+          type: string
+          example: "12345"
+        Salary:
+          type: integer
+          format: int64
+          example: 20000
+        joiningDate:
+          type: string
+          format: date-time
+        status:
+          type: string
+          description: Employee Status
+          example: working
+          default: working
+          enum:
+            - working
+            - serving notice
+            - not working
+        complete:
+          type: boolean
+      xml:
+        name: Employee
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
